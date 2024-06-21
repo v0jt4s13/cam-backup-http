@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video List</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png">
+    <link rel="manifest" href="/static/site.webmanifest">
+
+</head>
+<body>
+    <h1>Available Videos</h1>
+    <p>Total Directory Size: {{ total_directory_size }} MB</p>
+    <p><a href="stream">Live stream</a></p>
+
+    <table class="video-table">
+        <thead>
+            <tr>
+                <th>Filename</th>
+                <th>Date and Time</th>
+                <th>Size (MB)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for video, datetime, size in video_files %}
+            <tr class="{% if loop.first %}current-generation{% endif %}">
+                <td>
+                    {% if loop.first %}
+                        {{ video }}
+                    {% else %}
+                        <a href="{{ url_for('video', filename=video) }}">{{ video }}</a>
+                    {% endif %}
+                </td>
+                <td>{{ datetime.strftime('%Y-%m-%d %H:%M:%S') if datetime else 'Unknown' }}</td>
+                <td>{{ size }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>
